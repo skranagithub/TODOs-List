@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+    
+  {% block content %} 
+<!-- Add todo form-->
+    
+  <div class="container pt-4">
+    <div class="row">
+    <div class="col-lg-4 mx-auto shadow p-0">
+      <div class="alert alert-warning">
+        <h2 class="text-center"> Add your's todo here </h2>
+      </div>
+      <div class="p-4">
+        <form action="/add-todo/" method="POST">
+          {% csrf_token %}
+          {{form.as_p}}
+          <hr>
+      <input type="submit"  value=" Add Now " class="btn btn-dark text-white btn-outline-success">
+        </form>
+      </div>
+    </div>
+    <!-- Todo list-->
+    <div class="col"> 
+      <h2 class="text-center pb-3"> Welcome {{user}} Your todos are here !</h2>
+      <div class="">
+        <div class="border">
+          <table class="table ">
+            <thead>
+              <tr>
+                <!-- Headings-->
+                <th>S.No</th>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              
+                {% for todo in todos %}
+                <tr class="border">
+                <td  class="border">{{forloop.counter}}</td>
+                <td  class="border">{{todo.title}}</td>
+                <td class="border text-center">{{todo.status}}</td>
+                <td class="border text-center">{{todo.priority}}</td>
+                <td  class="border ">
+                  <a href="/delete-todo/{{todo.id}}" class="btn btn-danger">Delete</a>
+                  {% if todo.status == 'P' %}
+                  <a href="/change-status/{{todo.id}}/C" class="btn btn-success">Completed</a>
+                  {% else %}
+                  <a href="/change-status/{{todo.id}}/P" class="btn btn-warning">Pending  </a>
+                  {% endif %}
+                </td>
+                {% endfor %}
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      
+
+    </div>
+  </div>
+
+  {% endblock %}
+
+
